@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>少羽牛逼</title>
+<title>神秘惊喜</title>
 
 <style>
 html, body {
@@ -37,9 +37,13 @@ html, body {
 /* 跑马灯轨道 */
 .marquee {
     display: flex;
-    height: 100vh;
     align-items: center;
+    height: 100vh;
     white-space: nowrap;
+}
+
+.marquee-track {
+    display: flex;
 }
 
 /* 超大字 */
@@ -47,21 +51,10 @@ html, body {
     font-size: 100vh;
     line-height: 1;
     font-weight: bold;
+    padding-right: 5vw;
     background: linear-gradient(90deg,#ff00cc,#00ffff,#ffcc00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    padding-right: 5vw;
-}
-
-/* 真正无缝动画 */
-.marquee-track {
-    display: flex;
-    animation: scroll 40s linear infinite;
-}
-
-@keyframes scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
 }
 </style>
 </head>
@@ -74,16 +67,7 @@ html, body {
 
 <div id="scroll-container">
     <div class="marquee">
-        <div class="marquee-track">
-            <span>少羽牛逼666</span>
-            <span>少羽牛逼666</span>
-            <span>少羽牛逼666</span>
-            <span>少羽牛逼666</span>
-
-            <!-- 复制一组用于无缝 -->
-            <span>少羽牛逼666</span>
-            <span>少羽牛逼666</span>
-            <span>少羽牛逼666</span>
+        <div class="marquee-track" id="track">
             <span>少羽牛逼666</span>
         </div>
     </div>
@@ -94,10 +78,40 @@ function checkOrientation() {
     if (window.matchMedia("(orientation: landscape)").matches) {
         document.getElementById("rotate-message").style.display = "none";
         document.getElementById("scroll-container").style.display = "block";
+        startMarquee();
     } else {
         document.getElementById("rotate-message").style.display = "flex";
         document.getElementById("scroll-container").style.display = "none";
     }
+}
+
+function startMarquee() {
+    const track = document.getElementById("track");
+
+    // 先清空之前复制的
+    track.innerHTML = "<span>少羽牛逼666</span>";
+
+    const originalWidth = track.scrollWidth;
+    const screenWidth = window.innerWidth;
+
+    // 自动复制直到超过屏幕两倍
+    while (track.scrollWidth < screenWidth * 2) {
+        track.innerHTML += "<span>少羽牛逼666</span>";
+    }
+
+    let position = 0;
+    const speed = 0.8; // 数字越小越慢
+
+    function animate() {
+        position -= speed;
+        if (Math.abs(position) >= originalWidth) {
+            position = 0;
+        }
+        track.style.transform = `translateX(${position}px)`;
+        requestAnimationFrame(animate);
+    }
+
+    animate();
 }
 
 checkOrientation();
