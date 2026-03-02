@@ -24,7 +24,6 @@ html, body {
     align-items: center;
     font-size: 8vw;
     color: white;
-    text-align: center;
 }
 
 /* 横屏容器 */
@@ -35,21 +34,34 @@ html, body {
     overflow: hidden;
 }
 
-/* 全屏大字 */
-.scroll-text {
+/* 跑马灯轨道 */
+.marquee {
+    display: flex;
+    height: 100vh;
+    align-items: center;
     white-space: nowrap;
+}
+
+/* 超大字 */
+.marquee span {
     font-size: 100vh;
     line-height: 1;
     font-weight: bold;
-    background: linear-gradient(90deg, #ff00cc, #00ffff, #ffcc00);
+    background: linear-gradient(90deg,#ff00cc,#00ffff,#ffcc00);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: scroll 6s linear infinite;
+    padding-right: 5vw;
+}
+
+/* 真正无缝动画 */
+.marquee-track {
+    display: flex;
+    animation: scroll 20s linear infinite;
 }
 
 @keyframes scroll {
-    from { transform: translateX(100%); }
-    to { transform: translateX(-100%); }
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 </style>
 </head>
@@ -61,8 +73,19 @@ html, body {
 </div>
 
 <div id="scroll-container">
-    <div class="scroll-text">
-        少羽牛逼666 少羽牛逼666 少羽牛逼666
+    <div class="marquee">
+        <div class="marquee-track">
+            <span>少羽牛逼666</span>
+            <span>少羽牛逼666</span>
+            <span>少羽牛逼666</span>
+            <span>少羽牛逼666</span>
+
+            <!-- 复制一组用于无缝 -->
+            <span>少羽牛逼666</span>
+            <span>少羽牛逼666</span>
+            <span>少羽牛逼666</span>
+            <span>少羽牛逼666</span>
+        </div>
     </div>
 </div>
 
@@ -77,15 +100,9 @@ function checkOrientation() {
     }
 }
 
-// 初始检测
 checkOrientation();
-
-// 监听方向变化
 window.addEventListener("orientationchange", checkOrientation);
 window.addEventListener("resize", checkOrientation);
-
-// 每0.5秒强制检测一次（防止某些浏览器不触发）
-setInterval(checkOrientation, 500);
 </script>
 
 </body>
